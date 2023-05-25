@@ -14,6 +14,15 @@ class AvionResponse(BaseModel):
     limite_peso_kg: int
 
 
+class PasajeroRequest(BaseModel):
+    nombre: str
+
+
+class PasajeroResponse(BaseModel):
+    id: int
+    nombre: str
+
+
 
 class MessageResponse(BaseModel):
     message: str

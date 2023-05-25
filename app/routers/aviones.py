@@ -19,7 +19,21 @@ def registrar_avion(avion: AvionRequest, db: Session = Depends(get_db)):
     return avion
 
 
+@router.get('/aviones/{avion_id}', tags=['aviones'])
+def obtener_avion(avion_id: int, db: Session = Depends(get_db)):
+    avion = db.query(Avion).filter(Avion.id == avion_id).first()
+    return avion
+
+
 @router.get('/aviones/', tags=['aviones'])
 def listar_aviones(db: Session = Depends(get_db)):
     aviones = db.query(Avion).all()
     return aviones
+
+
+@router.delete('/aviones/{avion_id}', tags=['aviones'])
+def eliminar_avion(avion_id: int, db: Session = Depends(get_db)):
+    avion = db.query(Avion).filter(Avion.id == avion_id).first()
+    db.delete(avion)
+    db.commit()
+    return {'message': 'Avion eliminado'}

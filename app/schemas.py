@@ -23,6 +23,16 @@ class PasajeroResponse(BaseModel):
     nombre: str
 
 
+class AeropuertoRequest(BaseModel):
+    nombre: str
+    limite_aviones: int
+
+
+class AeropuertoResponse(BaseModel):
+    id: int
+    nombre: str
+    limite_aviones: int
+
 
 class MessageResponse(BaseModel):
     message: str

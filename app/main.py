@@ -8,6 +8,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app.include_router(aviones.router)
 app.include_router(pasajeros.router)
+app.include_router(aeropuertos.router)
 
 
 @app.get("/")

@@ -7,3 +7,18 @@ class AvionRequest(BaseModel):
     limite_peso_kg: int
 
 
+class AvionResponse(BaseModel):
+    id: int
+    nombre: str
+    limite_pasajeros: int
+    limite_peso_kg: int
+
+
+
+class MessageResponse(BaseModel):
+    message: str
+
+    def __init__(self, message: str):
+        self.message = message
+
+

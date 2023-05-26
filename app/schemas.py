@@ -11,6 +11,7 @@ class AvionRequest(BaseModel):
     nombre: str
     limite_pasajeros: int
     limite_peso_kg: int
+    aeropuerto_actual_id: int
 
 
 class AvionResponse(OrmModeBaseModel):
@@ -18,6 +19,7 @@ class AvionResponse(OrmModeBaseModel):
     nombre: str
     limite_pasajeros: int
     limite_peso_kg: int
+    aeropuerto_actual_id: int
 
 
 class PasajeroRequest(BaseModel):

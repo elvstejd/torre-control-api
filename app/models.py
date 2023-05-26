@@ -7,6 +7,8 @@ class Avion(Base):
     __tablename__ = "aviones"
 
     id = Column(Integer, primary_key=True, index=True)
+    aeropuerto_actual_id = Column(Integer, ForeignKey(
+        "aeropuertos.id"), nullable=True)
     nombre = Column(String)
     limite_pasajeros = Column(Integer)
     limite_peso_kg = Column(Integer)

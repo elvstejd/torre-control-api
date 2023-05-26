@@ -1,9 +1,9 @@
 import os
 import sys
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from schemas import AvionRequest, AvionResponse, MessageResponse, AvionDetalleResponse
 from sqlalchemy.orm import Session
-from models import Avion, Vuelo
+from models import Avion, Vuelo, Aeropuerto
 from db import get_db
 from fastapi import Depends
 
@@ -23,6 +23,16 @@ from utils import model_to_dict   # noqa: E402
 @router.post('/aviones/', tags=['aviones'], response_model=AvionResponse)
 def registrar_avion(avion: AvionRequest, db: Session = Depends(get_db)):
     avion = Avion(**avion.dict())
+    aeropuerto = db.query(Aeropuerto).filter(
+        Aeropuerto.id == avion.aeropuerto_actual_id).first()
+
+    limite_aviones = aeropuerto.limite_aviones
+    aviones_en_aeropuerto_actual = db.query(Avion).filter(
+        Avion.aeropuerto_actual_id == avion.aeropuerto_actual_id).count()
+
+    if aviones_en_aeropuerto_actual >= limite_aviones:
+        raise HTTPException(
+            status_code=400, detail='Limite de aviones alcanzado')
 
     db.add(avion)
     db.commit()

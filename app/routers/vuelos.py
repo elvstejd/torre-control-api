@@ -6,6 +6,7 @@ from db import get_db
 from fastapi import Depends
 from sqlalchemy.orm import object_mapper
 from sqlalchemy.sql import func
+from ..utils import model_to_dict
 
 router = APIRouter()
 
@@ -73,15 +74,6 @@ def agregar_pasajero_a_vuelo(pasajero: PasajeroVueloRequest, vuelo_id: int, db: 
     db.commit()
 
     return MessageResponse(message='Pasajero agregado al vuelo')
-
-
-def model_to_dict(model):
-    mapper = object_mapper(model)
-    data = {}
-    for column in mapper.columns:
-        value = getattr(model, column.key)
-        data[column.key] = value
-    return data
 
 
 @router.get('/vuelos/{vuelo_id}/pasajeros/', tags=['vuelos'], response_model=PasajeroVueloResponse)

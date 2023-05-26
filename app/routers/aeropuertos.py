@@ -19,6 +19,15 @@ def registrar_aeropuerto(aeropuerto: AeropuertoRequest, db: Session = Depends(ge
     return aeropuerto
 
 
+@router.get('/aeropuertos/', tags=['aeropuertos'], response_model=list[AeropuertoResponse])
+def listar_aeropuertos(db: Session = Depends(get_db)):
+
+    aeropuertos = db.query(Aeropuerto).all()
+    print(aeropuertos, 'estos son los aeropuertos')
+
+    return aeropuertos
+
+
 @router.delete('/aeropuertos/{aeropuerto_id}', tags=['aeropuertos'], response_model=MessageResponse)
 def eliminar_aeropuerto(aeropuerto_id: int, db: Session = Depends(get_db)):
     aeropuerto = db.query(Aeropuerto).filter(

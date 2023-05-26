@@ -23,7 +23,6 @@ def registrar_aeropuerto(aeropuerto: AeropuertoRequest, db: Session = Depends(ge
 def listar_aeropuertos(db: Session = Depends(get_db)):
 
     aeropuertos = db.query(Aeropuerto).all()
-    print(aeropuertos, 'estos son los aeropuertos')
 
     return aeropuertos
 

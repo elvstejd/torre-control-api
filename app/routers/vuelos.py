@@ -18,7 +18,7 @@ else:
     sys.path.append(os.pardir)
 
 
-from app.utils import model_to_dict, calcular_duracion   # noqa: E402
+from utils import model_to_dict, calcular_duracion   # noqa: E402
 
 
 router = APIRouter()

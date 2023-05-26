@@ -19,6 +19,12 @@ def registrar_pasajero(pasajero: PasajeroRequest, db: Session = Depends(get_db))
     return pasajero
 
 
+@router.get(path='/pasajeros/', tags=['pasajeros'], response_model=list[PasajeroResponse])
+def listar_pasajeros(db: Session = Depends(get_db)):
+    pasajeros = db.query(Pasajero).all()
+    return pasajeros
+
+
 @router.delete('/pasajeros/{pasajero_id}', tags=['pasajeros'], response_model=MessageResponse)
 def eliminar_pasajero(pasajero_id: int, db: Session = Depends(get_db)):
     pasajero = db.query(Pasajero).filter(Pasajero.id == pasajero_id).first()

@@ -1,5 +1,6 @@
 from db import Base
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum
+from sqlalchemy.sql import func
 
 
 class Avion(Base):
@@ -46,3 +47,21 @@ class PasajeroVuelo(Base):
     pasajero_id = Column(Integer, ForeignKey("pasajeros.id"))
     vuelo_id = Column(Integer, ForeignKey("vuelos.id"))
     peso_equipaje = Column(Integer)
+
+
+class Despegue(Base):
+    __tablename__ = "despegues"
+
+    id = Column(Integer, primary_key=True, index=True)
+    vuelo_id = Column(Integer, ForeignKey("vuelos.id"))
+    aeropuerto_id = Column(Integer, ForeignKey("aeropuertos.id"))
+    hora = Column(DateTime, default=func.now())
+
+
+class Aterrizaje(Base):
+    __tablename__ = "aterrizajes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    vuelo_id = Column(Integer, ForeignKey("vuelos.id"))
+    aeropuerto_id = Column(Integer, ForeignKey("aeropuertos.id"))
+    hora = Column(DateTime, default=func.now())

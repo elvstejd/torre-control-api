@@ -78,3 +78,27 @@ class PasajeroVueloResponse(OrmModeBaseModel):
     total_peso_equipaje: int
     limite_peso_equipaje: int
     pasajeros: list[PasajeroResponse]
+
+
+class DespegueRequest(BaseModel):
+    vuelo_id: int
+    aeropuerto_id: int
+
+
+class DespegueResponse(OrmModeBaseModel):
+    id: int
+    vuelo_id: int
+    aeropuerto_id: int
+    hora: datetime
+
+
+class AterrizajeRequest(BaseModel):
+    vuelo_id: int
+    aeropuerto_id: int
+
+
+class AterrizajeResponse(OrmModeBaseModel):
+    id: int
+    vuelo_id: int
+    aeropuerto_id: int
+    hora: datetime

@@ -29,6 +29,27 @@ def registrar_vuelo(vuelo: VueloRequest, db: Session = Depends(get_db)):
     vuelo = Vuelo(**vuelo.dict())
     duracion = calcular_duracion(vuelo.fecha_salida, vuelo.fecha_llegada)
 
+    vuelos_misma_fecha_salida = db.query(Vuelo).filter(
+        Vuelo.fecha_salida == vuelo.fecha_salida,
+        Vuelo.aeropuerto_origen_id == vuelo.aeropuerto_origen_id
+    ).count()
+    vuelos_misma_fecha_llegada = db.query(Vuelo).filter(
+        Vuelo.fecha_llegada == vuelo.fecha_llegada,
+        Vuelo.aeropuerto_destino_id == vuelo.aeropuerto_destino_id
+    ).count()
+
+    if vuelos_misma_fecha_salida >= 2:
+        raise HTTPException(
+            status_code=400,
+            detail='Ya existen 2 vuelos con la misma fecha de salida. No puede existir un tercero.'
+        )
+
+    if vuelos_misma_fecha_llegada >= 1:
+        raise HTTPException(
+            status_code=400,
+            detail='Ya existe un vuelo con la misma fecha de llegada. No puede existir un segundo.'
+        )
+
     db.add(vuelo)
     db.commit()
     db.refresh(vuelo)

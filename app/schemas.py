@@ -66,6 +66,19 @@ class VueloResponse(OrmModeBaseModel):
     duracion: str
 
 
+class VueloResumen(OrmModeBaseModel):
+    id: int
+    aeropuerto_origen_id: int
+    aeropuerto_destino_id: int
+    fecha_salida: datetime
+    fecha_llegada: datetime
+    estado: str
+
+
+class AvionDetalleResponse(AvionResponse):
+    vuelos: list[VueloResumen]
+
+
 class PasajeroVueloRequest(BaseModel):
     pasajero_id: int
     peso_equipaje: int

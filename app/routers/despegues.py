@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from schemas import DespegueRequest, DespegueResponse
 from sqlalchemy.orm import Session
-from models import Aeropuerto, Vuelo, Despegue
+from models import Vuelo, Despegue, Avion
 from db import get_db
 from fastapi import Depends
 
@@ -12,13 +12,16 @@ router = APIRouter()
 def registrar_despegue(despegue: DespegueRequest, db: Session = Depends(get_db)):
     despegue = Despegue(**despegue.dict())
     vuelo = db.query(Vuelo).filter(Vuelo.id == despegue.vuelo_id).first()
+    avion = db.query(Avion).filter(Avion.id == vuelo.avion_id).first()
 
     vuelo.estado = 'en_proceso'
-    db.add(vuelo)
+    avion.aeropuerto_actual_id = None
 
+    db.add(vuelo)
+    db.add(avion)
     db.add(despegue)
     db.commit()
-    db.refresh(vuelo)
+
     db.refresh(despegue)
 
     return despegue

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 
 class OrmModeBaseModel(BaseModel):
@@ -19,7 +20,7 @@ class AvionResponse(OrmModeBaseModel):
     nombre: str
     limite_pasajeros: int
     limite_peso_kg: int
-    aeropuerto_actual_id: int
+    aeropuerto_actual_id: Optional[int]
 
 
 class PasajeroRequest(BaseModel):
@@ -53,8 +54,8 @@ class VueloRequest(BaseModel):
     avion_id: int
     aeropuerto_origen_id: int
     aeropuerto_destino_id: int
-    fecha_salida: str
-    fecha_llegada: str
+    fecha_salida: datetime
+    fecha_llegada: datetime
 
 
 class VueloResponse(OrmModeBaseModel):

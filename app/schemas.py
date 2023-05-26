@@ -44,6 +44,36 @@ class MessageResponse(BaseModel):
     message: str
 
     def __init__(self, message: str):
-        self.message = message
+        super().__init__(message=message)
 
 
+class VueloRequest(BaseModel):
+    avion_id: int
+    aeropuerto_origen_id: int
+    aeropuerto_destino_id: int
+    fecha_salida: str
+    fecha_llegada: str
+
+
+class VueloResponse(OrmModeBaseModel):
+    id: int
+    avion_id: int
+    aeropuerto_origen_id: int
+    aeropuerto_destino_id: int
+    fecha_salida: datetime
+    fecha_llegada: datetime
+    estado: str
+
+
+class PasajeroVueloRequest(BaseModel):
+    pasajero_id: int
+    peso_equipaje: int
+
+
+class PasajeroVueloResponse(OrmModeBaseModel):
+    vuelo_id: int
+    total_pasajeros: int
+    limite_pasajeros: int
+    total_peso_equipaje: int
+    limite_peso_equipaje: int
+    pasajeros: list[PasajeroResponse]

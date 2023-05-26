@@ -1,4 +1,4 @@
-from routers import aviones, pasajeros, aeropuertos
+from routers import aviones, pasajeros, aeropuertos, vuelos
 from db import engine
 from fastapi import FastAPI
 import models
@@ -10,6 +10,7 @@ models.Base.metadata.create_all(bind=engine)
 app.include_router(aviones.router)
 app.include_router(pasajeros.router)
 app.include_router(aeropuertos.router)
+app.include_router(vuelos.router)
 
 
 @app.get("/")

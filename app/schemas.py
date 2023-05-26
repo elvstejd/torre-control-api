@@ -1,4 +1,10 @@
 from pydantic import BaseModel
+from datetime import datetime
+
+
+class OrmModeBaseModel(BaseModel):
+    class Config:
+        orm_mode = True
 
 
 class AvionRequest(BaseModel):
@@ -7,7 +13,7 @@ class AvionRequest(BaseModel):
     limite_peso_kg: int
 
 
-class AvionResponse(BaseModel):
+class AvionResponse(OrmModeBaseModel):
     id: int
     nombre: str
     limite_pasajeros: int
@@ -18,7 +24,7 @@ class PasajeroRequest(BaseModel):
     nombre: str
 
 
-class PasajeroResponse(BaseModel):
+class PasajeroResponse(OrmModeBaseModel):
     id: int
     nombre: str
 
@@ -28,7 +34,7 @@ class AeropuertoRequest(BaseModel):
     limite_aviones: int
 
 
-class AeropuertoResponse(BaseModel):
+class AeropuertoResponse(OrmModeBaseModel):
     id: int
     nombre: str
     limite_aviones: int

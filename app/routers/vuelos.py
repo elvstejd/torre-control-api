@@ -84,7 +84,7 @@ def agregar_pasajero_a_vuelo(pasajero: PasajeroVueloRequest, vuelo_id: int, db: 
 
     peso_actual_equipaje = db.query(
         func.sum(PasajeroVuelo.peso_equipaje)).filter(PasajeroVuelo.vuelo_id == vuelo_id).scalar(
-    )
+    ) or 0
 
     if pasajeros_a_bordo >= limite_pasajeros:
         return HTTPException(status_code=400, detail='No hay cupo en el vuelo')

@@ -63,6 +63,7 @@ class VueloResponse(OrmModeBaseModel):
     fecha_salida: datetime
     fecha_llegada: datetime
     estado: str
+    duracion: str
 
 
 class PasajeroVueloRequest(BaseModel):

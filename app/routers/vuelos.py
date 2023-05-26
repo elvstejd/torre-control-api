@@ -4,9 +4,22 @@ from sqlalchemy.orm import Session
 from models import Vuelo, PasajeroVuelo, Avion, Pasajero
 from db import get_db
 from fastapi import Depends
-from sqlalchemy.orm import object_mapper
 from sqlalchemy.sql import func
-from ..utils import model_to_dict
+from sqlalchemy import text, select
+
+
+import sys
+import os
+
+if '__file__' in vars():
+    path = os.path.join(os.path.dirname(__file__), os.pardir)
+    sys.path.append(path)
+else:
+    sys.path.append(os.pardir)
+
+
+from app.utils import model_to_dict, calcular_duracion   # noqa: E402
+
 
 router = APIRouter()
 
@@ -14,24 +27,39 @@ router = APIRouter()
 @router.post('/vuelos/', tags=['vuelos'], response_model=VueloResponse)
 def registrar_vuelo(vuelo: VueloRequest, db: Session = Depends(get_db)):
     vuelo = Vuelo(**vuelo.dict())
+    duracion = calcular_duracion(vuelo.fecha_salida, vuelo.fecha_llegada)
 
     db.add(vuelo)
     db.commit()
     db.refresh(vuelo)
 
-    return vuelo
+    return {
+        **model_to_dict(vuelo),
+        'duracion': str(duracion) + ' horas'
+    }
 
 
 @router.get('/vuelos/{vuelo_id}', tags=['vuelos'], response_model=VueloResponse)
 def obtener_vuelo(vuelo_id: int, db: Session = Depends(get_db)):
     vuelo = db.query(Vuelo).filter(Vuelo.id == vuelo_id).first()
-    return vuelo
+    duracion = calcular_duracion(vuelo.fecha_salida, vuelo.fecha_llegada)
+
+    return {
+        **model_to_dict(vuelo),
+        'duracion': str(duracion) + ' horas'
+    }
 
 
 @router.get('/vuelos/', tags=['vuelos'], response_model=list[VueloResponse])
 def listar_vuelos(db: Session = Depends(get_db)):
     vuelos = db.query(Vuelo).all()
-    return vuelos
+
+    return [
+        {
+            **model_to_dict(vuelo),
+            'duracion': str(calcular_duracion(vuelo.fecha_salida, vuelo.fecha_llegada)) + ' horas'
+        } for vuelo in vuelos
+    ]
 
 
 @router.delete('/vuelos/{vuelo_id}', tags=['vuelos'], response_model=MessageResponse)
